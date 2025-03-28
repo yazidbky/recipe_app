@@ -72,15 +72,12 @@ class MyApp extends StatelessWidget {
         BlocProvider(
             create: (context) => UserRecipesCubit(UserRecipesApiService())),
         BlocProvider(
-            create: (context) => UserRecipesCubit(UserRecipesApiService())
-              ..fetchRecipesByUser(userId!)),
+            create: (context) => UserRecipesCubit(UserRecipesApiService())),
         BlocProvider(
             create: (context) => UpdateRecipeCubit(UpdateRecipeApiService())),
         BlocProvider(
             create: (context) => DeleteRecipeCubit(DeleteRecipeApiService())),
-        BlocProvider(
-            create: (context) =>
-                UserCubit(UserApiService())..fetchUser(userId!)),
+        BlocProvider(create: (context) => UserCubit(UserApiService())),
         BlocProvider(create: (_) => RecipeRefreshCubit()),
       ],
       child: BlocBuilder<ThemeCubit, ThemeState>(
@@ -88,7 +85,7 @@ class MyApp extends StatelessWidget {
           return MaterialApp(
             title: 'Flutter Demo',
             theme: state.isDarkMode ? AppTheme.darkTheme : AppTheme.lightTheme,
-            home: isLoggedIn ? NavBar(userId: userId ?? '') : Login(),
+            home: isLoggedIn ? NavBar(userId: userId!) : Login(),
             debugShowCheckedModeBanner: false,
           );
         },

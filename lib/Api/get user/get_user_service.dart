@@ -6,7 +6,7 @@ class UserApiService {
   static const String userEndpoint = '/api/users';
   final Dio _dio = Dio();
 
-  Future<Map<String, dynamic>> getUser(String userId) async {
+  Future<Map<String, dynamic>> getUser(String? userId) async {
     try {
       final token = await getToken();
       final response = await _dio.get(

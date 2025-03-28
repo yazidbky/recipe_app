@@ -6,7 +6,7 @@ class UserRecipesApiService {
   static const String recipesEndpoint = '/api/recipes';
   final Dio _dio = Dio();
 
-  Future<Map<String, dynamic>> getRecipesByUser(String userId) async {
+  Future<Map<String, dynamic>> getRecipesByUser(String? userId) async {
     try {
       final String url = '$baseUrl$recipesEndpoint';
       final token = await getToken();

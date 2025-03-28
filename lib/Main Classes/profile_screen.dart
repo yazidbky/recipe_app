@@ -19,7 +19,7 @@ import 'package:recipe_app/start/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileScreen extends StatelessWidget {
-  final String userId;
+  final String? userId;
 
   const ProfileScreen({super.key, required this.userId});
 

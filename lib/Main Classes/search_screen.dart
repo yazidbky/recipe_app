@@ -18,22 +18,14 @@ class _SearchScreenState extends State<SearchScreen> {
   String _selectedCategory = "All";
   double _cookingDuration = 30; // Default slider position
 
-  @override
-  void initState() {
-    super.initState();
-    Future.delayed(Duration(milliseconds: 300), () {
-      FocusScope.of(context).requestFocus(FocusNode());
-    });
-  }
-
   void _showFilterBottomSheet() {
     showModalBottomSheet(
-      backgroundColor: Colors.white,
       context: context,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       isScrollControlled: true,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       builder: (context) {
         return StatefulBuilder(
           builder: (context, setModalState) {
@@ -48,7 +40,6 @@ class _SearchScreenState extends State<SearchScreen> {
                             fontSize: 18, fontWeight: FontWeight.bold)),
                     SizedBox(height: 16),
 
-                    // Category Filter
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
@@ -74,20 +65,13 @@ class _SearchScreenState extends State<SearchScreen> {
                             onSelected: (selected) {
                               setModalState(() {
                                 _selectedCategory = category;
-                                // Update search bar text
                               });
                             },
                             selectedColor: primaryColor,
-                            backgroundColor: Colors.white,
                             side: BorderSide(
                               color: _selectedCategory == category
                                   ? primaryColor
                                   : Colors.grey[400] ?? Colors.grey,
-                            ),
-                            labelStyle: TextStyle(
-                              color: _selectedCategory == category
-                                  ? Colors.white
-                                  : Colors.grey[400],
                             ),
                           ),
                         );
@@ -233,7 +217,7 @@ class _SearchScreenState extends State<SearchScreen> {
               ),
             ),
             IconButton(
-              icon: Icon(Icons.filter_list_outlined, color: Colors.black),
+              icon: Icon(Icons.filter_list_outlined),
               onPressed: _showFilterBottomSheet,
             ),
           ],

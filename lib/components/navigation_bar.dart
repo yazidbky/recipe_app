@@ -3,11 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_app/Cubits/get%20user%20cubit/get_user_cubit.dart';
 import 'package:recipe_app/Main%20Classes/profile_screen.dart';
 import 'package:recipe_app/Main%20Classes/upload_class.dart';
+import 'package:recipe_app/constants/colors.dart';
 import 'package:recipe_app/home/home.dart';
 
 class NavBar extends StatefulWidget {
-  final String userId;
-  const NavBar({super.key, required this.userId});
+  final String? userId;
+  const NavBar({super.key, this.userId});
 
   @override
   _NavBarState createState() => _NavBarState();
@@ -15,12 +16,11 @@ class NavBar extends StatefulWidget {
 
 class _NavBarState extends State<NavBar> {
   int _selectedIndex = 0;
-  late List<Widget> _screens; // Cache the screens list
+  late List<Widget> _screens;
 
   @override
   void initState() {
     super.initState();
-    // Initialize screens once
     _screens = [
       HomeScreen(),
       const Center(
@@ -31,7 +31,6 @@ class _NavBarState extends State<NavBar> {
       ProfileScreen(userId: widget.userId),
     ];
 
-    // Fetch user data
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<UserCubit>().fetchUser(widget.userId);
     });
@@ -39,20 +38,12 @@ class _NavBarState extends State<NavBar> {
 
   void _onItemTapped(int index) {
     if (index == 1) {
-      // Handle upload screen navigation
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => RecipeUploadScreen(userId: widget.userId),
         ),
       );
-      return;
-    }
-
-    if (index == 2) {
-      // Handle scan button click
-      print("Scan Button Pressed");
-      // TODO: Implement scan screen navigation
       return;
     }
 
@@ -76,7 +67,7 @@ class _NavBarState extends State<NavBar> {
           children: [
             _buildNavItem(Icons.home, "Home", 0),
             _buildNavItem(Icons.upload, "Upload", 1),
-            const SizedBox(width: 48), // Space for FAB
+            const SizedBox(width: 48),
             _buildNavItem(Icons.notifications, "Notification", 3),
             _buildNavItem(Icons.person, "Profile", 4),
           ],
@@ -84,7 +75,7 @@ class _NavBarState extends State<NavBar> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _onItemTapped(2),
-        backgroundColor: Colors.green,
+        backgroundColor: primaryColor,
         shape: const CircleBorder(),
         child: const Icon(Icons.qr_code_scanner, size: 28, color: Colors.white),
       ),
@@ -99,11 +90,11 @@ class _NavBarState extends State<NavBar> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, color: isSelected ? Colors.green : Colors.grey, size: 24),
+          Icon(icon, color: isSelected ? primaryColor : Colors.grey, size: 24),
           Text(
             label,
             style: TextStyle(
-              color: isSelected ? Colors.green : Colors.grey,
+              color: isSelected ? primaryColor : Colors.grey,
               fontSize: 12,
             ),
           ),

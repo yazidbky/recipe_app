@@ -5,7 +5,7 @@ import 'package:recipe_app/constants/colors.dart';
 class UploadSuccessDialog extends StatelessWidget {
   final String message;
   final String title;
-  final String userId;
+  final String? userId;
 
   const UploadSuccessDialog({
     super.key,

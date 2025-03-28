@@ -4,24 +4,24 @@ import 'package:recipe_app/constants/colors.dart';
 class CustomTextField extends StatelessWidget {
   final String? hintText;
   final Widget? prefixIcon;
-  final Widget? suffixIcon; // Made optional with a nullable type
+  final Widget? suffixIcon;
   final bool obscureText;
   final TextEditingController? controller;
   final int? maxLines;
   final double borderRadius;
   final void Function(String)? onSubmitted;
-  final FocusNode? focusNode; // Add FocusNode parameter
+  final FocusNode? focusNode;
 
   const CustomTextField(
       {super.key,
-      this.hintText, // Default empty string
+      this.hintText,
       this.prefixIcon,
-      this.suffixIcon, // Optional, defaults to null
+      this.suffixIcon,
       this.obscureText = false,
       this.controller,
       this.maxLines = 1,
       this.borderRadius = 32,
-      this.onSubmitted, // Default to false
+      this.onSubmitted,
       this.focusNode});
 
   @override
@@ -45,8 +45,8 @@ class CustomTextField extends StatelessWidget {
                 color: primaryColor, style: BorderStyle.solid, width: 2),
             borderRadius: BorderRadius.circular(borderRadius),
           ),
-          prefixIcon: prefixIcon, // Uses provided prefixIcon
-          suffixIcon: suffixIcon, // Conditionally add suffixIcon
+          prefixIcon: prefixIcon,
+          suffixIcon: suffixIcon,
           hintText: hintText,
           hintStyle: TextStyle(color: Colors.grey),
         ),

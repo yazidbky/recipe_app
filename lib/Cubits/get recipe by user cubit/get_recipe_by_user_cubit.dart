@@ -14,7 +14,7 @@ class UserRecipesCubit extends Cubit<UserRecipesState> {
     }
   }
 
-  Future<void> fetchRecipesByUser(String userId) async {
+  Future<void> fetchRecipesByUser(String? userId) async {
     emit(UserRecipesLoading());
     print('Fetching recipes for user: $userId'); // Add this
 

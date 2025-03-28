@@ -7,7 +7,7 @@ class UserCubit extends Cubit<UserState> {
 
   UserCubit(this._apiService) : super(UserInitial());
 
-  Future<void> fetchUser(String userId) async {
+  Future<void> fetchUser(String? userId) async {
     if (state is UserLoading) return;
 
     emit(UserLoading());
@@ -17,19 +17,9 @@ class UserCubit extends Cubit<UserState> {
         emit(UserLoaded(response['user']));
       } else {
         emit(UserError(response['error']));
-        // Re-emit previous state after delay if available
-        if (state is UserLoaded) {
-          await Future.delayed(Duration(seconds: 2));
-          emit(state);
-        }
       }
     } catch (e) {
       emit(UserError("Failed to fetch user: ${e.toString()}"));
-      // Re-emit previous state after delay if available
-      if (state is UserLoaded) {
-        await Future.delayed(Duration(seconds: 2));
-        emit(state);
-      }
     }
   }
 }

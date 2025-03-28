@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:recipe_app/Cubits/get%20recipe%20by%20user%20cubit/get_recipe_by_user_cubit.dart';
-import 'package:recipe_app/Cubits/get%20user%20cubit/get_user_cubit.dart';
 import 'package:recipe_app/Cubits/login%20cubit/login_cubit.dart';
 import 'package:recipe_app/Cubits/login%20cubit/login_state.dart';
 import 'package:recipe_app/constants/colors.dart';
 import 'package:recipe_app/components/custom_text_field.dart';
 import 'package:recipe_app/components/navigation_bar.dart';
 import 'package:recipe_app/start/register.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -19,16 +18,7 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  bool _obscureText = true;
-  final FocusNode emailFocusNode = FocusNode(); // Add FocusNode for email
-  final FocusNode passwordFocusNode = FocusNode(); // Add FocusNode for password
-
-  @override
-  void dispose() {
-    emailFocusNode.dispose(); // Dispose the FocusNode
-    passwordFocusNode.dispose(); // Dispose the FocusNode
-    super.dispose();
-  }
+  final bool _obscureText = true;
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +51,6 @@ class _LoginState extends State<Login> {
                     Icons.email,
                     color: theme.iconTheme.color,
                   ),
-                  focusNode: emailFocusNode, // Pass the FocusNode
                 ),
               ),
               SizedBox(height: 20),
@@ -72,7 +61,6 @@ class _LoginState extends State<Login> {
                   hintText: 'Password',
                   prefixIcon: Icon(Icons.lock),
                   obscureText: _obscureText,
-                  focusNode: passwordFocusNode, // Pass the FocusNode
                 ),
               ),
               SizedBox(height: 20),
@@ -92,27 +80,35 @@ class _LoginState extends State<Login> {
                 child: SizedBox(
                   width: double.infinity,
                   child: BlocConsumer<LoginCubit, LoginState>(
-                    listener: (context, state) {
+                    // In your login screen's BlocConsumer
+                    listener: (context, state) async {
                       if (state is LoginFailure) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(state.message),
-                            backgroundColor: Colors.red,
-                          ),
+                          SnackBar(content: Text(state.message)),
                         );
                       }
                       if (state is LoginSuccess) {
-                        context.read<UserCubit>().fetchUser(state.userId);
-                        context
-                            .read<UserRecipesCubit>()
-                            .fetchRecipesByUser(state.userId);
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                NavBar(userId: state.userId), // Pass the userId
-                          ),
-                        );
+                        // Ensure we have a valid userId before proceeding
+                        if (state.userId.isNotEmpty) {
+                          // Store the user ID in SharedPreferences
+                          final prefs = await SharedPreferences.getInstance();
+                          await prefs.setString('user_id', state.userId);
+
+                          // Navigate to home and fetch user data
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  NavBar(userId: state.userId),
+                            ),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                                content:
+                                    Text("Login failed - no user ID received")),
+                          );
+                        }
                       }
                     },
                     builder: (context, state) {

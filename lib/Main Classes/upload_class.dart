@@ -17,8 +17,8 @@ import 'package:image_picker/image_picker.dart';
 
 class RecipeUploadScreen extends StatefulWidget {
   final Map<String, dynamic>? initialData;
-  final String userId;
-  const RecipeUploadScreen({super.key, this.initialData, required this.userId});
+  final String? userId;
+  const RecipeUploadScreen({super.key, this.initialData, this.userId});
 
   @override
   State<RecipeUploadScreen> createState() => _RecipeUploadScreenState();
@@ -305,7 +305,6 @@ class _RecipeUploadScreenState extends State<RecipeUploadScreen> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 8),
                 Text(
                   "${selectedImage!.name} - ${(File(selectedImage!.path).lengthSync() / 1024).toStringAsFixed(2)} KB",
                   style: const TextStyle(
